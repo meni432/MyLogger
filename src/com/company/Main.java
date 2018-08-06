@@ -6,11 +6,12 @@ public class Main {
 
     static class ExampleWriter implements Runnable {
 
-        private final Logger m_logger = FastLoggerImplementation.getInstance();
+        private final Logger m_logger;
         private final String m_name;
 
-        public ExampleWriter(String name) {
+        public ExampleWriter(Logger logger, String name) {
             m_name = name;
+            m_logger = logger;
         }
 
         @Override
@@ -35,7 +36,7 @@ public class Main {
         logger.registerLoggingInterface(new SlowPrintlnLoggingHandler());
         for (int i = 0; i < 10; i ++)
         {
-            new Thread(new ExampleWriter("name " + i)).start();
+            new Thread(new ExampleWriter(logger, "name " + i)).start();
         }
     }
 }
