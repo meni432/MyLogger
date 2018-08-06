@@ -6,7 +6,7 @@ public class Main {
 
     static class ExampleWriter implements Runnable {
 
-        private final Logger m_logger = LoggerImplementation.getInstance();
+        private final Logger m_logger = FastLoggerImplementation.getInstance();
         private final String m_name;
 
         public ExampleWriter(String name) {
@@ -19,19 +19,20 @@ public class Main {
                 double randomValue = Math.random();
                 long time = System.currentTimeMillis();
                 m_logger.info( m_name + " :: some info " + time);
-//                try {
-//                    Thread.sleep((long)(randomValue * 100));
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    Thread.sleep((long)(randomValue * 100));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     public static void main(String[] args) throws IOException {
-        Logger logger = LoggerImplementation.getInstance();
+        Logger logger = FastLoggerImplementation.getInstance();
         logger.registerLoggingInterface(new PrintlnLoggingHandler());
         logger.registerLoggingInterface(new FileLoggingHandler("log-file.txt"));
+        logger.registerLoggingInterface(new SlowPrintlnLoggingHandler());
         for (int i = 0; i < 10; i ++)
         {
             new Thread(new ExampleWriter("name " + i)).start();
